@@ -1,8 +1,12 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
+import { ReactNode } from "react";
+
 import "./globals.css";
+import { auth } from "@/auth";
+import { Toaster } from "sonner";
 import ThemeProvider from "@/context/theme";
-import Navbar from "@/components/navigation/navbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,24 +22,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          {children}
-        </ThemeProvider>
-      </body>
+      <SessionProvider session={session}>
+        <body className={`${inter.className} antialiased`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+          <Toaster />
+        </body>
+      </SessionProvider>
     </html>
   );
-}
+};
+
+export default RootLayout;
