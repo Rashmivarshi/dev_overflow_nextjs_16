@@ -10,7 +10,7 @@ const Home = async () => {
     <>
       <h1 className=" text-5xl text-light-500">welcome to next.js 16👋</h1>
       <form
-        className="px-10 pt-[100px]"
+        className="px-10 pt-25"
         action={async () => {
           "use server";
           await signOut({ redirectTo: ROUTES.SIGN_IN });
