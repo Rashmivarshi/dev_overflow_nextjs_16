@@ -6,16 +6,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { SheetClose } from "@/components/ui/sheet";
+import React from "react";
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
-  const pathaname = usePathname();
+  const pathname = usePathname();
   const userId = "123"; // Replace with actual user ID logic
   return (
     <>
       {sidebarLinks.map((item) => {
         const isActive =
-          (pathaname.includes(item.route) && item.route.length > 1) ||
-          pathaname === item.route;
+          (pathname.includes(item.route) && item.route.length > 1) ||
+          pathname === item.route;
 
         if (item.route === "/profile") {
           if (userId) item.route = `${item.route}/${userId}`;
@@ -27,9 +28,9 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
             key={item.label}
             className={cn(
               isActive
-                ? "primary-gradient rounded-lg text-ligth-900"
+                ? "primary-gradient rounded-lg text-light-900"
                 : "text-dark300_light900",
-              "flex iem-center justify-start gap-4 bg-transparent p-3",
+              "flex items-center justify-start gap-4 bg-transparent p-4",
             )}
           >
             <Image
@@ -54,7 +55,7 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
             {LinkComponent}
           </SheetClose>
         ) : (
-          <div>{LinkComponent}</div>
+          <React.Fragment key={item.route}>{LinkComponent}</React.Fragment>
         );
       })}
     </>
