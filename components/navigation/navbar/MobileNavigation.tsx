@@ -43,7 +43,7 @@ const MobileNavigation = () => {
               alt="Dev Overflow Logo"
             />
             <p className="h2-bold font-space-grotesk text-light-100 dark:text-dark-900">
-              Dev <span className="text-primary-500">Flow</span>
+              Dev<span className="text-primary-500">OverFlow</span>
             </p>
           </Link>
         </SheetHeader>
@@ -53,7 +53,7 @@ const MobileNavigation = () => {
               <NavLinks isMobileNav />
             </section>
           </SheetClose>
-          <div className="flex flex-col gap-3 mt-10">
+          <div className="flex flex-col gap-3">
             <SheetClose asChild>
               <Link href={ROUTES.SIGN_IN}>
                 <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">

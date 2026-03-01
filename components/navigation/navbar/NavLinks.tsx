@@ -1,16 +1,17 @@
 "use client";
 
+import { SheetClose } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { SheetClose } from "@/components/ui/sheet";
 import React from "react";
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
   const pathname = usePathname();
-  const userId = "123"; // Replace with actual user ID logic
+  const userId = 1;
+
   return (
     <>
       {sidebarLinks.map((item) => {
@@ -22,6 +23,7 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
           if (userId) item.route = `${item.route}/${userId}`;
           else return null;
         }
+
         const LinkComponent = (
           <Link
             href={item.route}
@@ -50,8 +52,9 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
             </p>
           </Link>
         );
+
         return isMobileNav ? (
-          <SheetClose asChild key={item.label}>
+          <SheetClose asChild key={item.route}>
             {LinkComponent}
           </SheetClose>
         ) : (

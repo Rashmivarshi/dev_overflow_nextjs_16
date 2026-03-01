@@ -12,7 +12,7 @@ const LeftSideBar = () => {
         <NavLinks />
       </div>
 
-      <div className="flex flex-col gap-3 mt-10">
+      <div className="flex flex-col gap-3">
         <Button
           className="small-medium btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none"
           asChild
