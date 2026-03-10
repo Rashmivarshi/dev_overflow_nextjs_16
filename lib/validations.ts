@@ -72,11 +72,11 @@ export const AskQuestionSchema = z.object({
 export const UserSchema = z.object({
   name: z.string().min(1, "Name is required"),
   username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   bio: z.string().optional(),
-  image: z.string().url("Invalid image URL").optional(),
+  image: z.url("please provide valid URL").optional(),
   location: z.string().optional(),
-  portfolio: z.string().url("Invalid portfolio URL").optional(),
+  portfolio: z.url("please provide valid URL").optional(),
   reputation: z.number().optional(),
 });
 
