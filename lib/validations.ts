@@ -70,13 +70,15 @@ export const AskQuestionSchema = z.object({
 });
 
 export const UserSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.email("Invalid email address"),
+  name: z.string().min(1, { message: "Name is required." }),
+  username: z
+    .string()
+    .min(3, { message: "Username must be at least 3 characters long." }),
+  email: z.email({ message: "Please provide a valid email address." }),
   bio: z.string().optional(),
-  image: z.url("please provide valid URL").optional(),
+  image: z.url({ message: "Please provide a valid URL." }).optional(),
   location: z.string().optional(),
-  portfolio: z.url("please provide valid URL").optional(),
+  portfolio: z.url({ message: "Please provide a valid URL." }).optional(),
   reputation: z.number().optional(),
 });
 
@@ -109,7 +111,7 @@ export const SignInWithOAuthSchema = z.object({
   user: z.object({
     name: z.string().min(1, "Name is required"),
     username: z.string().min(3, "Username must be at least 3 characters"),
-    email: z.string().email("Invalid email address"),
+    email: z.email("Invalid email address"),
     image: z.string().url("Invalid image URL").optional(),
   }),
 });
