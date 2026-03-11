@@ -2,7 +2,7 @@ import tickets from "@/app/database";
 import { NextResponse } from "next/server";
 
 export async function GET(
-  _: Request, //request:Request but here we are not using request written as _
+  _: Request, //request:Request but here we are not using request so written as _
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
