@@ -62,6 +62,7 @@ export async function DELETE(
     await dbConnect();
 
     const user = await User.findByIdAndDelete(id);
+    if (!user) throw new NotFoundError("User");
     return NextResponse.json({ success: true, data: user }, { status: 200 });
   } catch (error) {
     return handleError(error, "api") as APIErrorResponse;
