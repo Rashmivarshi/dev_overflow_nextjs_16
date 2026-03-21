@@ -10,7 +10,7 @@ interface Author {
   name: string;
   image: string;
 }
-interface Question {
+interface Questions {
   _id: string;
   title: string;
   tags: Tag[];
@@ -37,3 +37,8 @@ type ErrorResponse = ActionResponse<undefined> & { success: false };
 type APIErrorResponse = NextResponse<ErrorResponse>;
 
 type APIResponse<T = null> = NextResponse<SuccesResponse<T>> | APIErrorResponse;
+
+interface RouteParams {
+  params: Promise<Record<string, string>>;
+  searchparams: Promise<Record<string, string>>;
+}

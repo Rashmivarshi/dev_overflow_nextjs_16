@@ -4,8 +4,9 @@ import Link from "next/link";
 import React from "react";
 import TagCard from "./TagCard";
 import Metric from "../Metric";
+import { Questions } from "@/types/global";
 interface Props {
-  question: Question;
+  question: Questions;
 }
 const QuestionCard = ({
   question: { _id, title, tags, author, upvotes, views, answers, createdAt },
