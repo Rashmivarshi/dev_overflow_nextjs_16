@@ -1,3 +1,4 @@
+"use server";
 import { ActionResponse, ErrorResponse } from "@/types/global";
 import action from "../handlers/action";
 import { AskQuestionSchema } from "../validations";
