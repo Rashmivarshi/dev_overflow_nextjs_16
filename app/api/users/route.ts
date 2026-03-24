@@ -1,7 +1,6 @@
 import User from "@/database/user.model";
 import handleError from "@/lib/handlers/error";
 import dbConnect from "@/lib/mongoose";
-import { APIErrorResponse } from "@/types/global";
 import { NextResponse } from "next/server";
 import { UserSchema } from "../../../lib/validations";
 import { ValidationError } from "@/lib/http-errors";

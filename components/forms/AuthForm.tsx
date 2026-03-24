@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ROUTES from "@/constants/routes";
-import { ActionResponse } from "@/types/global";
+
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 

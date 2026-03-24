@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 interface Tag {
   _id: string;
   name: string;
@@ -10,9 +8,10 @@ interface Author {
   name: string;
   image: string;
 }
-interface Questions {
+interface Question {
   _id: string;
   title: string;
+  content: string;
   tags: Tag[];
   author: Author;
   upvotes: number;

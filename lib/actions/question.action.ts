@@ -13,11 +13,10 @@ import {
   EditQuestionSchema,
   GetQuestionSchema,
 } from "../validations";
-import { ActionResponse, ErrorResponse, Questions } from "@/types/global";
 
 export async function createQuestion(
   params: CreateQuestionParams,
-): Promise<ActionResponse<Questions>> {
+): Promise<ActionResponse<Question>> {
   const validationResult = await action({
     params,
     schema: AskQuestionSchema,
@@ -82,7 +81,7 @@ export async function createQuestion(
 
 export async function editQuestion(
   params: EditQuestionParams,
-): Promise<ActionResponse<Questions>> {
+): Promise<ActionResponse<Question>> {
   const validationResult = await action({
     params,
     schema: EditQuestionSchema,
@@ -181,7 +180,7 @@ export async function editQuestion(
 
 export async function getQuestion(
   params: GetQuestionParams,
-): Promise<ActionResponse<Questions>> {
+): Promise<ActionResponse<Question>> {
   const validationResult = await action({
     params,
     schema: GetQuestionSchema,
