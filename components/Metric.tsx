@@ -1,37 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+
 interface Props {
   imgUrl: string;
   alt: string;
-  value: number | string;
+  value: string | number;
   title: string;
   href?: string;
-  textStyle: string;
-  imgStyle?: string;
+  textStyles: string;
+  imgStyles?: string;
   isAuthor?: boolean;
 }
+
 const Metric = ({
   imgUrl,
   alt,
   value,
   title,
   href,
-  textStyle,
-  imgStyle,
+  textStyles,
+  imgStyles,
   isAuthor,
 }: Props) => {
-  const LinkComponent = (
+  const metricContent = (
     <>
       <Image
         src={imgUrl}
-        alt={alt}
         width={16}
         height={16}
-        className={`rounded-full object-contain ${imgStyle}`}
+        alt={alt}
+        className={`rounded-full object-contain ${imgStyles}`}
       />
-      <p className={`${textStyle} flex items-center gap-1`}>
+
+      <p className={`${textStyles} flex items-center gap-1`}>
         {value}
+
         <span
           className={`small-regular line-clamp-1 ${isAuthor ? "max-sm:hidden" : ""}`}
         >
@@ -40,12 +44,13 @@ const Metric = ({
       </p>
     </>
   );
+
   return href ? (
     <Link href={href} className="flex-center gap-1">
-      {LinkComponent}
+      {metricContent}
     </Link>
   ) : (
-    <div className="flex-center gap-1">{LinkComponent}</div>
+    <div className="flex-center gap-1">{metricContent}</div>
   );
 };
 
