@@ -38,7 +38,7 @@ const StateSkeleton = ({
   message,
   button,
 }: StateSkeletonProps) => (
-  <div>
+  <div className=" mt-16 flex w-full flex-col items-center justify-center sm:mt-36">
     <>
       <Image
         src={image.dark}
@@ -79,8 +79,8 @@ const DataRender = <T,>({
     return (
       <StateSkeleton
         image={{
-          light: "/public/images/light-error.png",
-          dark: "/public/images/dark-error.png",
+          light: "/images/light-error.png",
+          dark: "/images/dark-error.png",
           alt: "Error illustration",
         }}
         title={error?.message || DEFAULT_ERROR.title}
@@ -97,8 +97,8 @@ const DataRender = <T,>({
     return (
       <StateSkeleton
         image={{
-          light: "/public/images/light-illustration.png.png",
-          dark: "/public/images/dark-illustration.png.png",
+          light: "/images/light-illustration.png",
+          dark: "/images/dark-illustration.png",
           alt: "empty illustration",
         }}
         title={empty.title}
@@ -106,7 +106,6 @@ const DataRender = <T,>({
         button={empty.button}
       />
     );
-
   return <div>{render(data)}</div>;
 };
 
