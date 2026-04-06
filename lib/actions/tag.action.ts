@@ -1,8 +1,12 @@
 import Tag from "@/database/tag.model";
 import handleError from "../handlers/error";
-import { PaginatedSearchParamsSchema } from "../validations";
+import {
+  GetTagQuestionsSchema,
+  PaginatedSearchParamsSchema,
+} from "../validations";
 import action from "../handlers/action";
 import { QueryFilter } from "mongoose";
+import { Question } from "@/database";
 
 export const getTags = async (
   params: PaginatedSearchParams,
@@ -55,6 +59,62 @@ export const getTags = async (
       success: true,
       data: {
         tags: JSON.parse(JSON.stringify(tags)),
+        isNext,
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const getTagQuestions = async (
+  params: GetTagQuestionParams,
+): Promise<
+  ActionResponse<{ tag: Tag; questions: Question[]; isNext: boolean }>
+> => {
+  const validationResult = await action({
+    params,
+    schema: GetTagQuestionsSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { tagId, page = 1, pageSize = 10, query } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+
+  try {
+    const tag = await Tag.findById(tagId);
+    if (!tag) {
+      throw new Error("Tag not found");
+    }
+    const filterQuery: QueryFilter<typeof Question> = {
+      tags: { $in: [tagId] },
+    };
+
+    if (query) {
+      filterQuery.title = { $regex: new RegExp(query, "i") };
+    }
+    const totalQuestions = await Question.countDocuments(filterQuery);
+
+    const questions = await Question.find(filterQuery)
+      .select(
+        "_id title tags answers  upvotes views downvotes author createdAt",
+      )
+      .populate([
+        { path: "tags", select: "name" },
+        { path: "author", select: "name image" },
+      ])
+      .skip(skip)
+      .limit(limit);
+    const isNext = totalQuestions > skip + questions.length;
+    return {
+      success: true,
+      data: {
+        tag: JSON.parse(JSON.stringify(tag)),
+        questions: JSON.parse(JSON.stringify(questions)),
         isNext,
       },
     };
