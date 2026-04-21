@@ -1,4 +1,5 @@
 import TagCard from "@/components/cards/TagCard";
+import Preview from "@/components/editor/Preview";
 import Metric from "@/components/Metric";
 import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constants/routes";
@@ -88,7 +89,8 @@ Looking forward to your suggestions and examples!
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
-  const { author, createdAt, title, views, answers, tags } = sampleQuestion;
+  const { author, createdAt, title, content, views, answers, tags } =
+    sampleQuestion;
   return (
     <>
       <div className=" flex-start w-full flex-col">
@@ -135,6 +137,7 @@ const QuestionDetails = async ({ params }: RouteParams) => {
           textStyles="small-regular text-dark400_light700"
         />
       </div>
+      <Preview content={content} />
       <div className="flex flex-wrap gap-4">
         {tags.map((tag: Tag) => (
           <TagCard key={tag._id} _id={tag._id} name={tag.name} compact />
