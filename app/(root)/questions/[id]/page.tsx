@@ -9,16 +9,17 @@ import { formatNumber, timeAgo } from "@/lib/utils";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import View from "../View";
+import { after } from "next/server";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
   // sequential it here to ensure view count is incremented before fetching question details, to reflect updated views count immediately. Can be optimized by running in parallel if eventual consistency is acceptable.
   // await incrementViews({ questionId: id });
-  // const { success, data: question } = await getQuestion({ questionId: id });
-  const [_, { success, data: question }] = await Promise.all([
-    incrementViews({ questionId: id }),
-    getQuestion({ questionId: id }),
-  ]);
+  const { success, data: question } = await getQuestion({ questionId: id });
+
+  after(async () => {
+    await incrementViews({ questionId: id });
+  });
 
   if (!success || !question) {
     return redirect("/404");
