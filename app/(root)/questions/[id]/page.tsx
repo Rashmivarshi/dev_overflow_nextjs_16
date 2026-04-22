@@ -8,6 +8,7 @@ import { formatNumber, timeAgo } from "@/lib/utils";
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import View from "../View";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -20,6 +21,7 @@ const QuestionDetails = async ({ params }: RouteParams) => {
 
   return (
     <>
+      <View questionId={id} />
       <div className=" flex-start w-full flex-col">
         <div className="flex flex-col-reverse w-full justify-between ">
           <div className="flex items-center justify-start gap-1">
