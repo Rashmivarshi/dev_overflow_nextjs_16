@@ -10,6 +10,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import View from "../View";
 import { after } from "next/server";
+import AnswerForm from "@/components/forms/AnswerForm";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -80,6 +81,9 @@ const QuestionDetails = async ({ params }: RouteParams) => {
           <TagCard key={tag._id} _id={tag._id} name={tag.name} compact />
         ))}
       </div>
+      <section className="mt-10">
+        <AnswerForm />
+      </section>
     </>
   );
 };
