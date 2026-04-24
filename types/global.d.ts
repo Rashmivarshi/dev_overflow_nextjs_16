@@ -49,3 +49,12 @@ interface PaginatedSearchParams {
   sort?: string;
   query?: string;
 }
+
+interface Answer {
+  _id: string;
+  author: Author;
+  question: Question;
+  content: string;
+  upvotes: number;
+  createdAt: Date;
+}
