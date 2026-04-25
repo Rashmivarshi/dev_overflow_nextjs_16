@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { after } from "next/server";
 import AnswerForm from "@/components/forms/AnswerForm";
 import { getAnswers } from "@/lib/actions/answer.action";
+import AllAnswers from "@/components/answers/AllAnswers";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -93,6 +94,14 @@ const QuestionDetails = async ({ params }: RouteParams) => {
           <TagCard key={tag._id} _id={tag._id} name={tag.name} compact />
         ))}
       </div>
+      <section className="my-5">
+        <AllAnswers
+          data={answersData?.answers}
+          success={AnswerSuccess}
+          error={AnswerError}
+          totalAnswers={answersData?.totalAnswers || 0}
+        />
+      </section>
       <section className="mt-10">
         <AnswerForm questionId={question._id} />
       </section>

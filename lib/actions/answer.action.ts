@@ -10,7 +10,6 @@ import Answer, { IAnswerDoc } from "@/database/answer.model";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { AnswerServerSchema, GetAnswersSchema } from "../validations";
-import page from "@/app/(root)/tags/[id]/page";
 
 export async function createAnswer(
   params: CreateAnswerParams,
