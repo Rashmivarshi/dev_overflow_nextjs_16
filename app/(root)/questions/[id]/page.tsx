@@ -33,7 +33,6 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     pageSize: 10,
     filter: "latest",
   });
-  console.log("answers", answersData);
 
   if (!success || !question) {
     return redirect("/404");
@@ -103,7 +102,11 @@ const QuestionDetails = async ({ params }: RouteParams) => {
         />
       </section>
       <section className="mt-10">
-        <AnswerForm questionId={question._id} />
+        <AnswerForm
+          questionId={question._id}
+          questionTitle={question.title}
+          questionContent={question.content}
+        />
       </section>
     </>
   );
