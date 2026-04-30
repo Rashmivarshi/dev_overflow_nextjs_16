@@ -178,11 +178,7 @@ export const CreateVoteSchema = z.object({
 });
 
 export const UpdateVoteCountSchema = CreateVoteSchema.extend({
-  change: z
-    .number()
-    .int()
-    .min(-1, "Change must be -1 (decrement) or 1 (increment)")
-    .max(1, "Change must be -1 (decrement) or 1 (increment)"),
+  change: z.union([z.literal(1), z.literal(-1)]),
 });
 
 export const HasVotedSchema = CreateVoteSchema.pick({
