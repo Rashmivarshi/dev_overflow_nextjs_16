@@ -13,6 +13,8 @@ import AnswerForm from "@/components/forms/AnswerForm";
 import { getAnswers } from "@/lib/actions/answer.action";
 import AllAnswers from "@/components/answers/AllAnswers";
 import Votes from "@/components/votes/Votes";
+import { hasVoted } from "@/lib/actions/votes.action";
+import { Suspense } from "react";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -34,7 +36,10 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     pageSize: 10,
     filter: "latest",
   });
-
+  const hasVotedPromise = hasVoted({
+    targetId: id,
+    targetType: "question",
+  });
   if (!success || !question) {
     return redirect("/404");
   }
@@ -60,12 +65,15 @@ const QuestionDetails = async ({ params }: RouteParams) => {
             </Link>
           </div>
           <div className="flex justify-end">
-            <Votes
-              upvotes={question.upvotes}
-              hasupVoted={true}
-              downvotes={question.downvotes}
-              hasdownVoted={false}
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Votes
+                targetId={id}
+                targetType="question"
+                upvotes={question.upvotes}
+                downvotes={question.downvotes}
+                hasVotedPromise={hasVotedPromise}
+              />
+            </Suspense>
           </div>
         </div>
         <h2 className="h2-semibold texrk300_light900 mt-3.5 w-full">{title}</h2>

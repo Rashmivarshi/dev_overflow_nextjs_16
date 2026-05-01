@@ -8,7 +8,10 @@ import {
   HasVotedSchema,
   UpdateVoteCountSchema,
 } from "../validations";
-import mongoose, { ClientSession } from "mongoose";
+import mongoose, { ClientSession, Types } from "mongoose";
+import { revalidatePath } from "next/cache";
+import ROUTES from "@/constants/routes";
+
 export async function updateVoteCount(
   params: UpdateVoteCountParams,
   session?: ClientSession,
@@ -23,16 +26,13 @@ export async function updateVoteCount(
   }
 
   const { targetId, targetType, voteType, change } = validationResult.params!;
-  const userId = validationResult.session?.user?.id;
-
-  if (!userId) return handleError(new Error("Unauthorized")) as ErrorResponse;
 
   const Model = targetType === "question" ? Question : Answer;
   const voteField = voteType === "upvote" ? "upvotes" : "downvotes";
 
   try {
     const result = await Model.findByIdAndUpdate(
-      targetId,
+      new Types.ObjectId(targetId),
       { $inc: { [voteField]: change } },
       { new: true, session },
     );
@@ -76,8 +76,8 @@ export async function createVotes(
   try {
     const existingVote = await Vote.findOne({
       author: userId,
-      id: targetId,
-      type: targetType,
+      actionId: targetId,
+      actionType: targetType,
     }).session(session);
 
     if (existingVote) {
@@ -94,6 +94,10 @@ export async function createVotes(
           { new: true, session },
         );
         await updateVoteCount(
+          { targetId, targetType, voteType: existingVote.voteType, change: -1 },
+          session,
+        );
+        await updateVoteCount(
           { targetId, targetType, voteType, change: 1 },
           session,
         );
@@ -103,19 +107,22 @@ export async function createVotes(
         [
           {
             author: userId,
-            id: targetId,
-            type: targetType,
+            actionId: targetId,
+            actionType: targetType,
             voteType,
           },
         ],
         { session },
       );
-      await updateVoteCount(
+      const res = await updateVoteCount(
         { targetId, targetType, voteType, change: 1 },
         session,
       );
+
+      console.log("vote update result:", res);
     }
-    session.commitTransaction();
+    await session.commitTransaction();
+    revalidatePath(ROUTES.QUESTION(targetId));
     return {
       success: true,
     };
@@ -146,8 +153,8 @@ export async function hasVoted(
   try {
     const vote = await Vote.findOne({
       author: userId,
-      id: targetId,
-      type: targetType,
+      actionId: targetId,
+      actionType: targetType,
     });
     if (!vote) {
       return {
