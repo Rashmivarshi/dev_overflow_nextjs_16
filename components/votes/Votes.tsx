@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { use, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
-import { createVotes } from "@/lib/actions/votes.action";
+import { createVote } from "@/lib/actions/votes.action";
 
 interface Props {
   targetId: string;
@@ -38,7 +38,7 @@ const Votes = ({
     setIsLoading(true);
 
     try {
-      const result = await createVotes({
+      const result = await createVote({
         targetId,
         targetType,
         voteType,

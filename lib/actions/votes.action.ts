@@ -34,7 +34,7 @@ export async function updateVoteCount(
     const result = await Model.findByIdAndUpdate(
       new Types.ObjectId(targetId),
       { $inc: { [voteField]: change } },
-      { new: true, session },
+      { returnDocument: "after", session },
     );
     if (!result) {
       return handleError(
@@ -52,7 +52,7 @@ export async function updateVoteCount(
   }
 }
 
-export async function createVotes(
+export async function createVote(
   params: CreateVoteParams,
 ): Promise<ActionResponse> {
   const validationResult = await action({
@@ -91,16 +91,23 @@ export async function createVotes(
         await Vote.findByIdAndUpdate(
           existingVote._id,
           { voteType },
-          { new: true, session },
+          { returnDocument: "after", session },
         );
-        await updateVoteCount(
-          { targetId, targetType, voteType: existingVote.voteType, change: -1 },
-          session,
-        );
-        await updateVoteCount(
-          { targetId, targetType, voteType, change: 1 },
-          session,
-        );
+        await Promise.all([
+          updateVoteCount(
+            {
+              targetId,
+              targetType,
+              voteType: existingVote.voteType,
+              change: -1,
+            },
+            session,
+          ),
+          updateVoteCount(
+            { targetId, targetType, voteType, change: 1 },
+            session,
+          ),
+        ]);
       }
     } else {
       await Vote.create(
@@ -114,12 +121,10 @@ export async function createVotes(
         ],
         { session },
       );
-      const res = await updateVoteCount(
+      await updateVoteCount(
         { targetId, targetType, voteType, change: 1 },
         session,
       );
-
-      console.log("vote update result:", res);
     }
     await session.commitTransaction();
     revalidatePath(ROUTES.QUESTION(targetId));
