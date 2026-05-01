@@ -23,7 +23,9 @@ const Votes = ({
 }: Props) => {
   const session = useSession();
   const userId = session.data?.user?.id;
+
   const { success, data } = use(hasVotedPromise);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { hasUpvoted, hasDownvoted } = data || {};

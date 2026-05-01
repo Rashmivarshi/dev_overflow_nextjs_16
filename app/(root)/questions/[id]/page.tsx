@@ -36,10 +36,12 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     pageSize: 10,
     filter: "latest",
   });
+
   const hasVotedPromise = hasVoted({
     targetId: id,
     targetType: "question",
   });
+
   if (!success || !question) {
     return redirect("/404");
   }
@@ -67,10 +69,10 @@ const QuestionDetails = async ({ params }: RouteParams) => {
           <div className="flex justify-end">
             <Suspense fallback={<div>Loading...</div>}>
               <Votes
-                targetId={id}
                 targetType="question"
                 upvotes={question.upvotes}
                 downvotes={question.downvotes}
+                targetId={question._id}
                 hasVotedPromise={hasVotedPromise}
               />
             </Suspense>
