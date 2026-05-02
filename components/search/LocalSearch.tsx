@@ -10,7 +10,7 @@ interface Props {
   imgSrc: string;
   placeholder: string;
   otherClasses?: string;
-  iconPostion?: "left" | "right";
+  iconPosition?: "left" | "right";
 }
 
 const LocalSearch = ({
@@ -18,7 +18,7 @@ const LocalSearch = ({
   imgSrc,
   placeholder,
   otherClasses,
-  iconPostion = "left",
+  iconPosition = "left",
 }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -58,7 +58,7 @@ const LocalSearch = ({
     <div
       className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
     >
-      {iconPostion === "left" && (
+      {iconPosition === "left" && (
         <Image
           src={imgSrc}
           alt="search"
@@ -74,7 +74,7 @@ const LocalSearch = ({
         onChange={(e) => setSearchQuery(e.target.value)}
         className="paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-hidden dark:bg-transparent"
       />
-      {iconPostion === "right" && (
+      {iconPosition === "right" && (
         <Image
           src={imgSrc}
           alt="search"
