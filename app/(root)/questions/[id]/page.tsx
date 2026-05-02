@@ -15,6 +15,7 @@ import AllAnswers from "@/components/answers/AllAnswers";
 import Votes from "@/components/votes/Votes";
 import { hasVoted } from "@/lib/actions/votes.action";
 import { Suspense } from "react";
+import SavedQuestion from "@/components/questions/SavedQuestion";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -66,7 +67,7 @@ const QuestionDetails = async ({ params }: RouteParams) => {
               </p>
             </Link>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center gap-4">
             <Suspense fallback={<div>Loading...</div>}>
               <Votes
                 targetType="question"
@@ -76,9 +77,14 @@ const QuestionDetails = async ({ params }: RouteParams) => {
                 hasVotedPromise={hasVotedPromise}
               />
             </Suspense>
+            <Suspense fallback={<div>Loading...</div>}>
+              <SavedQuestion questionId={question._id} />
+            </Suspense>
           </div>
         </div>
-        <h2 className="h2-semibold texrk300_light900 mt-3.5 w-full">{title}</h2>
+        <h2 className="h2-semibold text-dark300_light900 mt-3.5 w-full">
+          {title}
+        </h2>
       </div>
       <div className="mb-8 mt-5 flex flex-wrap gap-4">
         <Metric
