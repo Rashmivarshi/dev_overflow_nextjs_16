@@ -16,6 +16,7 @@ import Votes from "@/components/votes/Votes";
 import { hasVoted } from "@/lib/actions/votes.action";
 import { Suspense } from "react";
 import SavedQuestion from "@/components/questions/SavedQuestion";
+import { hasSavedQuestion } from "@/lib/actions/collection.action";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -41,6 +42,10 @@ const QuestionDetails = async ({ params }: RouteParams) => {
   const hasVotedPromise = hasVoted({
     targetId: id,
     targetType: "question",
+  });
+
+  const hasSavedQuestionPromise = hasSavedQuestion({
+    questionId: id,
   });
 
   if (!success || !question) {
@@ -78,7 +83,10 @@ const QuestionDetails = async ({ params }: RouteParams) => {
               />
             </Suspense>
             <Suspense fallback={<div>Loading...</div>}>
-              <SavedQuestion questionId={question._id} />
+              <SavedQuestion
+                questionId={question._id}
+                hasSavedQuestionPromise={hasSavedQuestionPromise}
+              />
             </Suspense>
           </div>
         </div>
