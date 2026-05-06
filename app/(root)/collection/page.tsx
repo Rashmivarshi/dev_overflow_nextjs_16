@@ -1,9 +1,11 @@
+import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import DataRender from "@/components/DataRender";
 import LocalSearch from "@/components/search/LocalSearch";
 import ROUTES from "@/constants/routes";
 import { EMPTY_QUESTION } from "@/constants/states";
 import { getSavedQuestions } from "@/lib/actions/collection.action";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -17,7 +19,11 @@ const Collections = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
+  const loggedInUser = await auth();
 
+  if (!loggedInUser) {
+    redirect(ROUTES.SIGN_IN);
+  }
   const { collection } = data || {};
 
   return (
