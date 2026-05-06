@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import DataRender from "@/components/DataRender";
 import CommonFilter from "@/components/filters/CommonFilter";
+import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
 import { CollectionFilters } from "@/constants/filters";
 import ROUTES from "@/constants/routes";
@@ -26,7 +27,7 @@ const Collections = async ({ searchParams }: SearchParams) => {
   if (!loggedInUser) {
     redirect(ROUTES.SIGN_IN);
   }
-  const { collection } = data || {};
+  const { collection, isNext } = data || {};
 
   return (
     <>
@@ -59,6 +60,7 @@ const Collections = async ({ searchParams }: SearchParams) => {
           </div>
         )}
       />
+      <Pagination page={page} isNext={isNext || false} />
     </>
   );
 };

@@ -10,6 +10,7 @@ import DataRender from "@/components/DataRender";
 import { EMPTY_QUESTION } from "@/constants/states";
 import CommonFilter from "@/components/filters/CommonFilter";
 import { HomePageFilters } from "@/constants/filters";
+import Pagination from "@/components/Pagination";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -19,12 +20,12 @@ const Home = async ({ searchParams }: SearchParams) => {
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getQuestions({
     page: Number(page) || 1,
-    pageSize: Number(pageSize) || 10,
+    pageSize: Number(pageSize) || 2,
     query: query || "",
     filter: filter || "",
   });
-  const { questions } = data || {};
-
+  const { questions, isNext } = data || {};
+  console.log("page", page);
   return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -63,6 +64,11 @@ const Home = async ({ searchParams }: SearchParams) => {
             ))}
           </div>
         )}
+      />
+      <Pagination
+        page={page}
+        isNext={isNext || false}
+        containerClasses="mt-10"
       />
     </>
   );

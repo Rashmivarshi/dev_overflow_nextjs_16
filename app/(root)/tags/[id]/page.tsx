@@ -1,5 +1,6 @@
 import QuestionCard from "@/components/cards/QuestionCard";
 import DataRender from "@/components/DataRender";
+import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
 import ROUTES from "@/constants/routes";
 import { EMPTY_QUESTION } from "@/constants/states";
@@ -16,7 +17,7 @@ const page = async ({ params, searchParams }: RouteParams) => {
     pageSize: Number(pageSize) || 10,
     query,
   });
-  const { tag, questions } = data || {};
+  const { tag, questions, isNext } = data || {};
 
   return (
     <>
@@ -46,6 +47,7 @@ const page = async ({ params, searchParams }: RouteParams) => {
           </div>
         )}
       />
+      <Pagination page={page} isNext={isNext || false} />
     </>
   );
 };
