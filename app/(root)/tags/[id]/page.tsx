@@ -32,6 +32,7 @@ const page = async ({ params, searchParams }: RouteParams) => {
           otherClasses="flex-1"
         />
       </section>
+
       <DataRender
         success={success}
         error={error}

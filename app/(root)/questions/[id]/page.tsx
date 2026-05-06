@@ -18,8 +18,9 @@ import { Suspense } from "react";
 import SavedQuestion from "@/components/questions/SavedQuestion";
 import { hasSavedQuestion } from "@/lib/actions/collection.action";
 
-const QuestionDetails = async ({ params }: RouteParams) => {
+const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
+  const { page, pageSize, filter } = await searchParams;
   // sequential it here to ensure view count is incremented before fetching question details, to reflect updated views count immediately. Can be optimized by running in parallel if eventual consistency is acceptable.
   // await incrementViews({ questionId: id });
   const { success, data: question } = await getQuestion({ questionId: id });
@@ -34,9 +35,9 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     error: AnswerError,
   } = await getAnswers({
     questionId: id,
-    page: 1,
-    pageSize: 10,
-    filter: "latest",
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 10,
+    filter,
   });
 
   const hasVotedPromise = hasVoted({
