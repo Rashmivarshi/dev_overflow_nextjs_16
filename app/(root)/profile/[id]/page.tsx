@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Stats from "@/components/user/Stats";
 
 const Profile = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -76,6 +77,17 @@ const Profile = async ({ params }: RouteParams) => {
             </Link>
           )}
         </div>
+      </section>
+      <section className="mt-10">
+        <Stats
+          totalQuestions={totalQuestions}
+          totalAnswers={totalAnswers}
+          badges={{
+            GOLD: 0,
+            SILVER: 0,
+            BRONZE: 0,
+          }}
+        />
       </section>
     </>
   );
