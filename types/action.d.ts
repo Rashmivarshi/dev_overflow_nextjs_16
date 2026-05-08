@@ -68,3 +68,11 @@ interface GetUserQuestionParams extends Omit<
 interface GetUserAnswersParams extends PaginatedSearchParams {
   userId: string;
 }
+
+interface DeleteQuestionParams {
+  questionId: string;
+}
+
+interface DeleteAnswerParams {
+  answerId: string;
+}
