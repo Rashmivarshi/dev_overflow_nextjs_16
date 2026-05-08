@@ -58,3 +58,13 @@ interface HasVotedResponse {
   hasUpvoted: boolean;
   hasDownvoted: boolean;
 }
+interface GetUserQuestionParams extends Omit<
+  PaginatedSearchParams,
+  "filter" | "sort" | "query"
+> {
+  userId: string;
+}
+
+interface GetUserAnswersParams extends PaginatedSearchParams {
+  userId: string;
+}

@@ -1,7 +1,11 @@
 import { auth } from "@/auth";
 import ProfileLink from "@/components/user/ProfileLink";
 import UserAvatar from "@/components/UserAvatar";
-import { getUser, getUserQuestions } from "@/lib/actions/user.action";
+import {
+  getUser,
+  getUserAnswers,
+  getUserQuestions,
+} from "@/lib/actions/user.action";
 import { notFound } from "next/navigation";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -9,9 +13,10 @@ import { Button } from "@/components/ui/button";
 import Stats from "@/components/user/Stats";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataRender from "@/components/DataRender";
-import { EMPTY_QUESTION } from "@/constants/states";
+import { EMPTY_ANSWERS, EMPTY_QUESTION } from "@/constants/states";
 import QuestionCard from "@/components/cards/QuestionCard";
 import Pagination from "@/components/Pagination";
+import AnswerCard from "@/components/cards/AnswerCard";
 
 const Profile = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
@@ -44,7 +49,20 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
   });
+
+  const {
+    success: UserAnswerSuccess,
+    data: UserAnswer,
+    error: UserAnswerError,
+  } = await getUserAnswers({
+    userId: id,
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 10,
+  });
+
   const { questions, isNext: hasMoreQuestions } = UserQuestion!;
+  const { answers, isNext: hasMoreAnswers } = UserAnswer!;
+
   return (
     <>
       <section className="flex flex-col-reverse justify-between items-start sm:flex-row">
@@ -138,7 +156,26 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
             value="answers"
             className="mt-5 flex w-full flex-col gap-6"
           >
-            Make changes to your account here.
+            <DataRender
+              data={answers}
+              success={UserAnswerSuccess}
+              error={UserAnswerError}
+              empty={EMPTY_ANSWERS}
+              render={(answers) => (
+                <div className="flex w-full flex-col gap-6">
+                  {answers.map((answer) => (
+                    <AnswerCard
+                      key={answer._id}
+                      {...answer}
+                      content={answer.content.slice(0, 28)}
+                      containerClassName="card-wrapper rounded-[10px] px-7 py-9 sm:px-11"
+                      showReadMore
+                    />
+                  ))}
+                </div>
+              )}
+            />
+            <Pagination page={page} isNext={hasMoreAnswers} />
           </TabsContent>
         </Tabs>
       </section>

@@ -5,6 +5,7 @@ import action from "../handlers/action";
 import handleError from "../handlers/error";
 import {
   GetUserQuestionsSchema,
+  GetUsersAnswersSchema,
   GetUserSchema,
   PaginatedSearchParamsSchema,
 } from "../validations";
@@ -144,6 +145,46 @@ export async function getUserQuestions(params: GetUserQuestionParams): Promise<
       success: true,
       data: {
         questions: JSON.parse(JSON.stringify(questions)),
+        isNext,
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getUserAnswers(params: GetUserAnswersParams): Promise<
+  ActionResponse<{
+    answers: Answer[];
+    isNext: boolean;
+  }>
+> {
+  const validationResult = await action({
+    params,
+    schema: GetUsersAnswersSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+  const { userId, page = 1, pageSize } = validationResult.params!;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+
+  try {
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+
+    const answers = await Answer.find({ author: userId })
+      .populate("author", "_id name image")
+      .skip(skip)
+      .limit(limit);
+
+    const isNext = totalAnswers > skip + answers.length;
+
+    return {
+      success: true,
+      data: {
+        answers: JSON.parse(JSON.stringify(answers)),
         isNext,
       },
     };
