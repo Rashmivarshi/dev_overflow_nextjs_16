@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Stats from "@/components/user/Stats";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Profile = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -78,16 +79,39 @@ const Profile = async ({ params }: RouteParams) => {
           )}
         </div>
       </section>
-      <section className="mt-10">
-        <Stats
-          totalQuestions={totalQuestions}
-          totalAnswers={totalAnswers}
-          badges={{
-            GOLD: 0,
-            SILVER: 0,
-            BRONZE: 0,
-          }}
-        />
+
+      <Stats
+        totalQuestions={totalQuestions}
+        totalAnswers={totalAnswers}
+        badges={{
+          GOLD: 0,
+          SILVER: 0,
+          BRONZE: 0,
+        }}
+      />
+      <section className="mt-5 flex gap-10">
+        <Tabs defaultValue="top-posts" className="flex-[2]">
+          <TabsList className="min-h-[42px] p-1">
+            <TabsTrigger value="top-posts" className="tab">
+              Top Posts
+            </TabsTrigger>
+            <TabsTrigger value="answers" className="tab">
+              Answers
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent
+            value="top-posts"
+            className="mt-5 flex w-full flex-col gap-6"
+          >
+            Make changes to your account here.
+          </TabsContent>
+          <TabsContent
+            value="answers"
+            className="mt-5 flex w-full flex-col gap-6"
+          >
+            Make changes to your account here.
+          </TabsContent>
+        </Tabs>
       </section>
     </>
   );
