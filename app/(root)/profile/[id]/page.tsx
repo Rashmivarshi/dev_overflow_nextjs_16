@@ -5,6 +5,7 @@ import {
   getUser,
   getUserAnswers,
   getUserQuestions,
+  getUserTopTags,
 } from "@/lib/actions/user.action";
 import { notFound } from "next/navigation";
 import dayjs from "dayjs";
@@ -13,10 +14,11 @@ import { Button } from "@/components/ui/button";
 import Stats from "@/components/user/Stats";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataRender from "@/components/DataRender";
-import { EMPTY_ANSWERS, EMPTY_QUESTION } from "@/constants/states";
+import { EMPTY_ANSWERS, EMPTY_QUESTION, EMPTY_TAGS } from "@/constants/states";
 import QuestionCard from "@/components/cards/QuestionCard";
 import Pagination from "@/components/Pagination";
 import AnswerCard from "@/components/cards/AnswerCard";
+import TagCard from "@/components/cards/TagCard";
 
 const Profile = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
@@ -60,9 +62,15 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
     pageSize: Number(pageSize) || 10,
   });
 
+  const {
+    success: UserTopTagSuccess,
+    data: UserTopTag,
+    error: UserTopTagError,
+  } = await getUserTopTags({ userId: id });
+
   const { questions, isNext: hasMoreQuestions } = UserQuestion!;
   const { answers, isNext: hasMoreAnswers } = UserAnswer!;
-
+  const { tags } = UserTopTag!;
   return (
     <>
       <section className="flex flex-col-reverse justify-between items-start sm:flex-row">
@@ -123,7 +131,7 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
           BRONZE: 0,
         }}
       />
-      <section className="mt-5 flex gap-10">
+      <section className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="flex-[2]">
           <TabsList className="min-h-[42px] p-1">
             <TabsTrigger value="top-posts" className="tab">
@@ -178,6 +186,31 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
             <Pagination page={page} isNext={hasMoreAnswers} />
           </TabsContent>
         </Tabs>
+        <div className="flex flex-col w-full min-w-[250px] flex-1 max-lg:hidden">
+          <h3 className="h3-bold text-dark200_light900 mb-5">TopTech</h3>
+          <div className="mt-5 flex flex-col gap-4">
+            <DataRender
+              data={tags}
+              success={UserTopTagSuccess}
+              error={UserTopTagError}
+              empty={EMPTY_TAGS}
+              render={(tags) => (
+                <div className="mt-3 flex w-full flex-col gap-4">
+                  {tags.map((tag) => (
+                    <TagCard
+                      key={tag._id}
+                      _id={tag._id}
+                      name={tag.name}
+                      questions={tag.count}
+                      showCount
+                      compact
+                    />
+                  ))}
+                </div>
+              )}
+            />
+          </div>
+        </div>
       </section>
     </>
   );

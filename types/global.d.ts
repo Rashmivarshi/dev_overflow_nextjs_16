@@ -94,3 +94,7 @@ interface BadgeCounts {
   SILVER: number;
   BRONZE: number;
 }
+
+interface GetUserTopTagParams {
+  userId: string;
+}
