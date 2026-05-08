@@ -72,6 +72,7 @@ interface User {
   location?: string;
   portfolio?: string;
   reputation?: number;
+  createdAt: Date;
 }
 
 interface CollectionBaseParams {
@@ -82,4 +83,8 @@ interface Collection {
   _id: string;
   author: string | Author;
   question: Question;
+}
+
+interface GetUserParams {
+  userId: string;
 }
