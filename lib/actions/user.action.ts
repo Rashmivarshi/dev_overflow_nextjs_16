@@ -11,7 +11,6 @@ import {
   PaginatedSearchParamsSchema,
 } from "../validations";
 import { Answer, Question, User } from "@/database";
-import { string } from "zod";
 
 export async function getUsers(
   params: PaginatedSearchParams,
