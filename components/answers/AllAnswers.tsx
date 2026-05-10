@@ -21,16 +21,20 @@ const AllAnswers = ({
 }: Props) => {
   return (
     <div className="mt-11">
-      <div className="flex items-center justify-between">
-        <h3 className="primary-text-gradient">
+      <div className="flex items-center gap-4">
+        <h3 className="primary-text-gradient shrink-0">
           {totalAnswers} {totalAnswers === 1 ? "Answer" : "Answers"}
         </h3>
-        <CommonFilter
-          filters={AnswerFilters}
-          otherClasses="sm:min-w-32"
-          containerClasses="max-xs:w-full"
-        />
+
+        <div className="relative z-100 ml-auto">
+          <CommonFilter
+            filters={AnswerFilters}
+            otherClasses="sm:min-w-32"
+            containerClasses="max-xs:w-full"
+          />
+        </div>
       </div>
+
       <DataRender
         success={success}
         data={data}
@@ -40,6 +44,7 @@ const AllAnswers = ({
           answers.map((answer) => <AnswerCard key={answer._id} {...answer} />)
         }
       />
+
       <Pagination page={page} isNext={isNext} />
     </div>
   );

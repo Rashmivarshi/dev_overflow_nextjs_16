@@ -50,7 +50,7 @@ const CommonFilter = ({ filters, containerClasses, otherClasses }: Props) => {
             <SelectValue placeholder="Select a filter" />
           </div>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="z-[100]">
           <SelectGroup>
             {filters.map((item) => (
               <SelectItem key={item.value} value={item.value}>
