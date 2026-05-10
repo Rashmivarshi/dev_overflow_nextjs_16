@@ -4,8 +4,8 @@ import Image from "next/image";
 interface Props {
   totalQuestions: number;
   totalAnswers: number;
-  badges: BadgeCounts;
-  reputationPoints?: number;
+  badges: Badges;
+  reputationPoints: number;
 }
 
 interface StatsCardProps {

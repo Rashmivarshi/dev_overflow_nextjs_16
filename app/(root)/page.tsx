@@ -25,7 +25,7 @@ const Home = async ({ searchParams }: SearchParams) => {
     filter: filter || "",
   });
   const { questions, isNext } = data || {};
-  console.log("page", page);
+
   return (
     <>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">

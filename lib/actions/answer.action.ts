@@ -95,9 +95,10 @@ export async function getAnswers(params: GetAnswersParams): Promise<
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, questionId, filter } = params;
+  const { questionId, page = 1, pageSize = 10, filter } = params;
+
   const skip = (Number(page) - 1) * pageSize;
-  const limit = Number(pageSize);
+  const limit = pageSize;
 
   let sortCriteria = {};
 
@@ -105,16 +106,17 @@ export async function getAnswers(params: GetAnswersParams): Promise<
     case "latest":
       sortCriteria = { createdAt: -1 };
       break;
-    case "Oldest":
+    case "oldest":
       sortCriteria = { createdAt: 1 };
       break;
-    case "Popular":
+    case "popular":
       sortCriteria = { upvotes: -1 };
       break;
     default:
       sortCriteria = { createdAt: -1 };
       break;
   }
+
   try {
     const totalAnswers = await Answer.countDocuments({ question: questionId });
     const answers = await Answer.find({ question: questionId })

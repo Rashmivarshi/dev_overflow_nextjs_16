@@ -22,7 +22,6 @@ const SocialAuthForm = () => {
         }
       });
     } catch (error) {
-      console.log(error);
       toast.error("sign-in failed", {
         description:
           error instanceof Error

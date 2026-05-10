@@ -30,16 +30,17 @@ export const getTags = async (
   if (query) {
     filterQuery.$or = [{ name: { $regex: new RegExp(query, "i") } }];
   }
+
   let sortCriteria = {};
+
   switch (filter) {
     case "popular":
       sortCriteria = { questions: -1 };
       break;
     case "recent":
-      filterQuery.answers = 0;
       sortCriteria = { createdAt: -1 };
       break;
-    case "old":
+    case "oldest":
       sortCriteria = { createdAt: 1 };
       break;
     case "name":
