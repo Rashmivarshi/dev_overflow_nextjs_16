@@ -56,6 +56,7 @@ export async function createAnswer(
 
     question.answers += 1;
     await question.save({ session });
+
     after(async () => {
       await createInteraction({
         action: "post",
@@ -178,6 +179,14 @@ export async function deleteAnswer(
 
     await Answer.findByIdAndDelete(answerId);
 
+    after(async () => {
+      await createInteraction({
+        action: "delete",
+        actionId: answerId,
+        actionTarget: "answer",
+        authorId: userId as string,
+      });
+    });
     // Revalidate to reflect immediate changes on UI
     revalidatePath(`/profile/${userId}`);
 

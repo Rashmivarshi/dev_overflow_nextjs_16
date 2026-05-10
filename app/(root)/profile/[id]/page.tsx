@@ -8,7 +8,7 @@ import {
   getUserStats,
   getUserTopTags,
 } from "@/lib/actions/user.action";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,9 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
   }
   const loggedUser = await auth();
 
+  if (!loggedUser?.user) {
+    redirect("/sign-in");
+  }
   const { success, data, error } = await getUser({ userId: id });
 
   if (!success)

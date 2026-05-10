@@ -17,14 +17,20 @@ import { hasVoted } from "@/lib/actions/votes.action";
 import { Suspense } from "react";
 import SavedQuestion from "@/components/questions/SavedQuestion";
 import { hasSavedQuestion } from "@/lib/actions/collection.action";
+import { auth } from "@/auth";
 
 const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
   const { page, pageSize, filter } = await searchParams;
-  // sequential it here to ensure view count is incremented before fetching question details, to reflect updated views count immediately. Can be optimized by running in parallel if eventual consistency is acceptable.
-  // await incrementViews({ questionId: id });
+
+  const loggedUser = await auth();
+  if (!loggedUser) {
+    redirect("/sign-in");
+  }
   const { success, data: question } = await getQuestion({ questionId: id });
 
+  // sequential it here to ensure view count is incremented before fetching question details, to reflect updated views count immediately. Can be optimized by running in parallel if eventual consistency is acceptable.
+  // await incrementViews({ questionId: id });
   after(async () => {
     await incrementViews({ questionId: id });
   });

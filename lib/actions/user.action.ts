@@ -258,22 +258,23 @@ export async function getUserStats(params: GetUserParams): Promise<
   const { userId } = validationResult.params!;
 
   try {
-    const [questionStats] = await Question.aggregate([
-      {
-        $match: {
-          author: new Types.ObjectId(userId),
+    const [questionStats = { count: 0, upvotes: 0, views: 0 }] =
+      await Question.aggregate([
+        {
+          $match: {
+            author: new Types.ObjectId(userId),
+          },
         },
-      },
-      {
-        $group: {
-          _id: null,
-          count: { $sum: 1 },
-          upvotes: { $sum: "$upvotes" },
-          views: { $sum: "$views" },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            upvotes: { $sum: "$upvotes" },
+            views: { $sum: "$views" },
+          },
         },
-      },
-    ]);
-    const [answerStats] = await Answer.aggregate([
+      ]);
+    const [answerStats = { count: 0, upvotes: 0 }] = await Answer.aggregate([
       { $match: { author: new Types.ObjectId(userId) } },
       {
         $group: {
