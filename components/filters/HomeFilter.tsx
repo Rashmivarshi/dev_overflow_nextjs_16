@@ -5,12 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { formUrlQuery, RemoveKeyFromUrl } from "@/lib/url";
 const filters = [
-  { name: "next.js", value: "next.js" },
-  { name: "react.js", value: "react.js" },
-  //   { name: "Newest", value: "newest" },
-  //   { name: "Popular", value: "popular" },
-  //   { name: "Unanswered", value: "unanswered" },
-  //   { name: "Recommended", value: "recommended" },
+  { name: "Newest", value: "newest" },
+  { name: "Popular", value: "popular" },
+  { name: "Unanswered", value: "unanswered" },
+  { name: "Recommended", value: "recommended" },
 ];
 
 const HomeFilter = () => {
