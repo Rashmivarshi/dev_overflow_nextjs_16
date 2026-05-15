@@ -18,6 +18,31 @@ import { Suspense } from "react";
 import SavedQuestion from "@/components/questions/SavedQuestion";
 import { hasSavedQuestion } from "@/lib/actions/collection.action";
 import { auth } from "@/auth";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: RouteParams): Promise<Metadata> {
+  const { id } = await params;
+
+  const { success, data: question } = await getQuestion({ questionId: id });
+
+  if (!success || !question)
+    return {
+      title: "question not found",
+      description: "This question does not exist",
+    };
+
+  return {
+    title: question.title,
+    description: question.content.slice(0, 100),
+    twitter: {
+      card: "summary_large_image",
+      title: question.title,
+      description: question.content.slice(0, 100),
+    },
+  };
+}
 
 const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
@@ -27,6 +52,7 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   if (!loggedUser) {
     redirect("/sign-in");
   }
+
   const { success, data: question } = await getQuestion({ questionId: id });
 
   // sequential it here to ensure view count is incremented before fetching question details, to reflect updated views count immediately. Can be optimized by running in parallel if eventual consistency is acceptable.
