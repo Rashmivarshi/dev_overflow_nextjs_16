@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { formUrlQuery, RemoveKeyFromUrl } from "@/lib/url";
+import { formUrlQuery, removeKeyFromUrl } from "@/lib/url";
 const filters = [
   { name: "Newest", value: "newest" },
   { name: "Popular", value: "popular" },
@@ -22,7 +22,7 @@ const HomeFilter = () => {
     let newUrl = "";
     if (filter === active) {
       setActive("");
-      newUrl = RemoveKeyFromUrl({
+      newUrl = removeKeyFromUrl({
         params: searchParams.toString(),
         keyToRemove: ["filter"],
       });

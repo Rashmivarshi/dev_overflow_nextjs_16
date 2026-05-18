@@ -1,26 +1,37 @@
 import queryString from "query-string";
 
-interface urlProps {
+interface UrlProps {
   params: string;
   key: string;
-  value: string;
+  value: string | null;
 }
-interface RemoveurlProps {
+
+interface RemoveUrlProps {
   params: string;
   keyToRemove: string[];
 }
-export const formUrlQuery = ({ params, key, value }: urlProps) => {
-  const currentUrl = queryString.parse(params);
-  currentUrl[key] = value;
 
-  return queryString.stringifyUrl({
-    url: window.location.pathname,
-    query: currentUrl,
-  });
+export const formUrlQuery = ({ params, key, value }: UrlProps) => {
+  const currentUrl = queryString.parse(params);
+
+  if (value === null) {
+    delete currentUrl[key];
+  } else {
+    currentUrl[key] = value;
+  }
+
+  return queryString.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true },
+  );
 };
 
-export const RemoveKeyFromUrl = ({ params, keyToRemove }: RemoveurlProps) => {
+export const removeKeyFromUrl = ({ params, keyToRemove }: RemoveUrlProps) => {
   const currentUrl = queryString.parse(params);
+
   keyToRemove.forEach((key) => {
     delete currentUrl[key];
   });

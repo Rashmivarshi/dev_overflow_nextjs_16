@@ -119,3 +119,9 @@ interface Country {
   };
   cca2: string;
 }
+
+interface GlobalSearchedItem {
+  id: string;
+  type: "question" | "answer" | "user" | "tag";
+  title: string;
+}

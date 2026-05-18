@@ -26,7 +26,7 @@ const AllAnswers = ({
           {totalAnswers} {totalAnswers === 1 ? "Answer" : "Answers"}
         </h3>
 
-        <div className="relative z-100 ml-auto">
+        <div className="relative z-10 ml-auto">
           <CommonFilter
             filters={AnswerFilters}
             otherClasses="sm:min-w-32"

@@ -20,8 +20,6 @@ const Jobs = async ({ searchParams }: RouteParams) => {
     page: Number(page) || 1,
   });
 
-  // console.log(jobs);
-
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Jobs</h1>
