@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
@@ -9,8 +9,16 @@ import { Toaster } from "sonner";
 import ThemeProvider from "@/context/theme";
 
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-inter",
+  style: ["normal"],
+});
+
+const spacegrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +42,9 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
         />
       </head>
       <SessionProvider session={session}>
-        <body className={`${inter.className} antialiased`}>
+        <body
+          className={`${inter.className} ${spacegrotesk.variable} antialiased`}
+        >
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
