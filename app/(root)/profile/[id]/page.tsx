@@ -110,9 +110,13 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
                   title="Portfolio"
                 />
               )}
-              {location && (
-                <ProfileLink imgUrl="/icons/location.svg" title="Portfolio" />
+              {user.location && (
+                <ProfileLink
+                  imgUrl="/icons/location.svg"
+                  title={user.location}
+                />
               )}
+
               <ProfileLink
                 imgUrl="/icons/calendar.svg"
                 title={dayjs(createdAt).format("MMMM YYYY")}
