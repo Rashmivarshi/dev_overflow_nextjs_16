@@ -2,9 +2,6 @@
 
 const nextConfig = {
   /* config options here */
-  experimental: {
-    turbopackFileSystemCacheForDev: true,
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
