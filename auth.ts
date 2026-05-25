@@ -10,7 +10,6 @@ import { api } from "./lib/api";
 import { SignInSchema } from "./lib/validations";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  debug: true,
   providers: [
     GitHub,
     Google,
@@ -37,17 +36,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             password,
             existingAccount.password!,
           );
-          console.log("credentials", credentials);
-
-          console.log("validatedFields", validatedFields);
-
-          console.log("existingAccount", existingAccount);
-
-          console.log("existingUser", existingUser);
-
-          console.log("password", password);
-
-          console.log("hashed", existingAccount?.password);
           if (isValidPassword) {
             return {
               id: existingUser._id.toString(),
